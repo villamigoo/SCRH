@@ -37,7 +37,7 @@ public class HomePanel extends JPanel implements ActionListener {
         add(requestBtn);
 
         // CARD 3
-        webinarsBtn = createCard("Appointments", 480);
+        webinarsBtn = createCard("Notifications", 480);
         add(webinarsBtn);
     }
 

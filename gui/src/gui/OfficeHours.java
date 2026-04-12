@@ -39,7 +39,7 @@ public class OfficeHours extends JPanel {
         hoursTitle.setBounds(30, 170, 300, 25);
         this.add(hoursTitle);
 
-        // TABLE
+        // TABLE DATA
         String[][] data = {
                 {"Monday", "9:00 AM - 5:00 PM"},
                 {"Tuesday", "9:00 AM - 5:00 PM"},
@@ -49,11 +49,21 @@ public class OfficeHours extends JPanel {
 
         String[] columns = {"Days", "Office Hours"};
 
-        JTable table = new JTable(data, columns);
+        // NON-EDITABLE TABLE
+        JTable table = new JTable(data, columns) {
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
         table.setFillsViewportHeight(true);
 
+        // auto height
+        int rowHeight = table.getRowHeight();
+        int tableHeight = data.length * rowHeight + 25;
+
         JScrollPane scrollPane = new JScrollPane(table);
-        scrollPane.setBounds(30, 200, 500, 120);
+        scrollPane.setBounds(30, 200, 500, tableHeight);
 
         this.add(scrollPane);
     }

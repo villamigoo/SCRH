@@ -2,6 +2,8 @@ package gui;
 
 import javax.swing.*;
 import java.awt.*;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class RequestForm extends JPanel {
 
@@ -9,6 +11,7 @@ public class RequestForm extends JPanel {
     JComboBox<String> dropdown;
     JTextArea detailsArea;
     JButton submitBtn;
+    
 
     public RequestForm() {
 
@@ -57,5 +60,25 @@ public class RequestForm extends JPanel {
         submitBtn.setBackground(new Color(200, 200, 200));
         submitBtn.setFont(new Font("Arial", Font.BOLD, 16));
         this.add(submitBtn);
+        
+        submitBtn.addActionListener(e -> {
+
+            String name = nameField.getText();
+            String studentId = emailField.getText();
+            String category = (String) dropdown.getSelectedItem();
+            String details = detailsArea.getText();
+
+            String timeNow = LocalDateTime.now()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+
+            RequestData.addRequest(name, studentId, category, details, timeNow);
+
+            JOptionPane.showMessageDialog(this, "Request submitted!");
+
+            // Clear fields
+            nameField.setText("");
+            emailField.setText("");
+            detailsArea.setText("");
+        });
     }
 }

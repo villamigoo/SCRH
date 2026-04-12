@@ -7,9 +7,10 @@ import gui.RequestForm;
 
 public class MainApp extends JFrame implements ActionListener {
 
-    JButton homeBtn, tutorialsBtn, webinarsBtn, supportBtn, requestBtn, adminBtn;
-    JPanel mainPanel, homePanel, resourcesPanel, appointmentsPanel, officePanel, requestPanel, adminPanel;
+    JButton homeBtn, tutorialsBtn, notificationsBtn, supportBtn, requestBtn, adminBtn;
+    JPanel mainPanel, homePanel, resourcesPanel,officePanel, requestPanel, adminPanel;
     CardLayout cardLayout;
+    NotificationsPanel notificationsPanel;
 
     public MainApp() {
 
@@ -29,7 +30,7 @@ public class MainApp extends JFrame implements ActionListener {
         // Buttons
         homeBtn = createNavButton("HOME");
         tutorialsBtn = createNavButton("RESOURCES");
-        webinarsBtn = createNavButton("APPOINTMENTS");
+        notificationsBtn = createNavButton("NOTIFICATIONS");
         supportBtn = createNavButton("OFFICE HOURS");
         requestBtn = createNavButton("REQUEST");
         adminBtn = createNavButton("ADMIN");
@@ -40,7 +41,7 @@ public class MainApp extends JFrame implements ActionListener {
 
         navBar.add(homeBtn);
         navBar.add(tutorialsBtn);
-        navBar.add(webinarsBtn);
+        navBar.add(notificationsBtn);
         navBar.add(supportBtn);
         navBar.add(requestBtn);
         navBar.add(adminBtn);
@@ -55,17 +56,17 @@ public class MainApp extends JFrame implements ActionListener {
         // Create content panels
         homePanel = new HomePanel(this);
         resourcesPanel = new ResourcePanel();
-        appointmentsPanel = createPanel("Appointment Scheduling Dashboard");
         officePanel = new OfficeHours();
         requestPanel = new RequestForm();
+        notificationsPanel = new NotificationsPanel();
         adminPanel = createPanel("Admin Panel");
         
         // Add panels to Layout
         mainPanel.add(homePanel, "HOME");
         mainPanel.add(resourcesPanel, "RESOURCES");
-        mainPanel.add(appointmentsPanel, "APPOINTMENTS");
         mainPanel.add(officePanel, "OFFICE HOURS");
         mainPanel.add(requestPanel, "REQUEST");
+        mainPanel.add(notificationsPanel, "NOTIFICATIONS");
         mainPanel.add(adminPanel, "ADMIN");
 
         this.add(mainPanel);
@@ -105,8 +106,9 @@ public class MainApp extends JFrame implements ActionListener {
             cardLayout.show(mainPanel, "RESOURCES");
         }
 
-        if (e.getSource() == webinarsBtn) {
-            cardLayout.show(mainPanel, "APPOINTMENTS");
+        if (e.getSource() == notificationsBtn) {
+            notificationsPanel.loadRequests(); 
+            cardLayout.show(mainPanel, "NOTIFICATIONS");
         }
 
         if (e.getSource() == supportBtn) {
