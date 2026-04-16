@@ -60,6 +60,6 @@ public class HomePanel extends JPanel implements ActionListener {
             parent.cardLayout.show(parent.mainPanel, "REQUEST");
 
         if (e.getSource() == webinarsBtn)
-            parent.cardLayout.show(parent.mainPanel, "APPOINTMENT");
+            parent.cardLayout.show(parent.mainPanel, "NOTIFICATIONS");
     }
 }

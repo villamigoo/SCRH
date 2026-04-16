@@ -40,7 +40,7 @@ public class frame extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 
     	if (e.getSource() == loginButton) {
-    	    new Login(this);
+    	    new Login();
     	    this.setVisible(false); // hide main menu
     	}
 

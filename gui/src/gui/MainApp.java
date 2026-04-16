@@ -4,11 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import gui.RequestForm;
+import gui.AdminPanel;
 
 public class MainApp extends JFrame implements ActionListener {
 
     JButton homeBtn, tutorialsBtn, notificationsBtn, supportBtn, requestBtn, adminBtn;
-    JPanel mainPanel, homePanel, resourcesPanel,officePanel, requestPanel, adminPanel;
+    JPanel mainPanel, homePanel, resourcesPanel, officePanel, requestPanel, adminPanel;
+    JPanel navBar;
+    AnalyticsPanel analyticsPanel;
     CardLayout cardLayout;
     NotificationsPanel notificationsPanel;
 
@@ -21,49 +24,30 @@ public class MainApp extends JFrame implements ActionListener {
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        // NAVBAR PANEL
-        JPanel navBar = new JPanel();
+        // NAVBAR
+        navBar = new JPanel();
         navBar.setLayout(new GridLayout(1, 6));
         navBar.setBounds(0, 0, 800, 50);
         navBar.setBackground(new Color(30, 30, 30));
-
-        // Buttons
-        homeBtn = createNavButton("HOME");
-        tutorialsBtn = createNavButton("RESOURCES");
-        notificationsBtn = createNavButton("NOTIFICATIONS");
-        supportBtn = createNavButton("OFFICE HOURS");
-        requestBtn = createNavButton("REQUEST");
-        adminBtn = createNavButton("ADMIN");
-        
-
-        adminBtn.setBackground(new Color(0, 150, 200));
-        adminBtn.setForeground(Color.WHITE);
-
-        navBar.add(homeBtn);
-        navBar.add(tutorialsBtn);
-        navBar.add(notificationsBtn);
-        navBar.add(supportBtn);
-        navBar.add(requestBtn);
-        navBar.add(adminBtn);
-
         this.add(navBar);
 
-        // MAIN PANEL with CardLayout
+        // MAIN PANEL
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
         mainPanel.setBounds(0, 50, 800, 450);
 
-        // Create content panels
+        // PANELS
         homePanel = new HomePanel(this);
         resourcesPanel = new ResourcePanel();
         officePanel = new OfficeHours();
         requestPanel = new RequestForm();
         notificationsPanel = new NotificationsPanel();
-        adminPanel = createPanel("Admin Panel");
+        adminPanel = new AdminPanel();
+        analyticsPanel = new AnalyticsPanel();
         
-        // Add panels to Layout
         mainPanel.add(homePanel, "HOME");
         mainPanel.add(resourcesPanel, "RESOURCES");
+        mainPanel.add(analyticsPanel, "ANALYTICS");
         mainPanel.add(officePanel, "OFFICE HOURS");
         mainPanel.add(requestPanel, "REQUEST");
         mainPanel.add(notificationsPanel, "NOTIFICATIONS");
@@ -71,10 +55,76 @@ public class MainApp extends JFrame implements ActionListener {
 
         this.add(mainPanel);
 
+        setupStudentNav();
+
         this.setVisible(true);
     }
 
-    // Button design
+    // STUDENT NAVBAR
+    public void setupStudentNav() {
+
+        navBar.removeAll();
+        navBar.setLayout(new GridLayout(1, 7));
+        homeBtn = createNavButton("HOME");
+        tutorialsBtn = createNavButton("RESOURCES");
+        notificationsBtn = createNavButton("NOTIFICATIONS");
+        supportBtn = createNavButton("OFFICE HOURS");
+        requestBtn = createNavButton("REQUEST");
+        adminBtn = createNavButton("ADMIN");
+
+        adminBtn.setBackground(new Color(0, 150, 200));
+        adminBtn.setForeground(Color.WHITE);
+     
+        navBar.add(homeBtn);
+        navBar.add(tutorialsBtn);
+        navBar.add(notificationsBtn);
+        navBar.add(supportBtn);
+        navBar.add(requestBtn);
+        navBar.add(adminBtn);
+
+        navBar.revalidate();
+        navBar.repaint();
+    }
+
+
+ // ADMIN NAVBAR
+    public void setupAdminNav() {
+
+        navBar.removeAll();
+        navBar.setLayout(new GridLayout(1, 4));
+
+        JButton dashBtn = createNavButton("DASHBOARD");
+        JButton reqBtn = createNavButton("REQUESTS");
+        JButton analyticsBtn = createNavButton("ANALYTICS");
+        JButton logoutBtn = createNavButton("LOGOUT");
+
+        navBar.add(dashBtn);
+        navBar.add(reqBtn);
+        navBar.add(analyticsBtn);
+        navBar.add(logoutBtn);
+
+        dashBtn.addActionListener(e -> cardLayout.show(mainPanel, "ADMIN"));
+
+        reqBtn.addActionListener(e -> {
+            notificationsPanel.loadRequests();
+            cardLayout.show(mainPanel, "NOTIFICATIONS");
+        });
+
+        analyticsBtn.addActionListener(e -> {
+            analyticsPanel.loadStats();
+            cardLayout.show(mainPanel, "ANALYTICS");
+        });
+
+        logoutBtn.addActionListener(e -> {
+            setupStudentNav();
+            cardLayout.show(mainPanel, "HOME");
+        });
+
+        navBar.revalidate();
+        navBar.repaint();
+    }
+
+    // BUTTON DESIGN
     public JButton createNavButton(String text) {
         JButton btn = new JButton(text);
         btn.setFocusPainted(false);
@@ -83,16 +133,6 @@ public class MainApp extends JFrame implements ActionListener {
         btn.setBorder(BorderFactory.createEmptyBorder());
         btn.addActionListener(this);
         return btn;
-    }
-
-    // Simple panel with label
-    public JPanel createPanel(String text) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        JLabel label = new JLabel(text, SwingConstants.CENTER);
-        label.setFont(new Font("Arial", Font.BOLD, 20));
-        panel.add(label, BorderLayout.CENTER);
-        return panel;
     }
 
     @Override
@@ -107,7 +147,7 @@ public class MainApp extends JFrame implements ActionListener {
         }
 
         if (e.getSource() == notificationsBtn) {
-            notificationsPanel.loadRequests(); 
+            notificationsPanel.loadRequests();
             cardLayout.show(mainPanel, "NOTIFICATIONS");
         }
 
@@ -118,13 +158,18 @@ public class MainApp extends JFrame implements ActionListener {
         if (e.getSource() == requestBtn) {
             cardLayout.show(mainPanel, "REQUEST");
         }
+
         if (e.getSource() == adminBtn) {
-            cardLayout.show(mainPanel, "ADMIN");
+            new AdminLogin(this);
         }
-
     }
 
-    public static void main(String[] args) {
-        new MainApp();
+    public void openAdminPanel() {
+        setupAdminNav();
+        ((AdminPanel) adminPanel).loadRequests();
+        cardLayout.show(mainPanel, "ADMIN");
     }
+    
+   
+    
 }

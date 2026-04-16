@@ -4,22 +4,19 @@ import javax.swing.*;
 import java.awt.event.*;
 
 public class Login extends JFrame implements ActionListener {
-	
-	frame mainFrame;
 
     JTextField usernameField;
     JPasswordField passwordField;
     JButton loginBtn;
 
-    public Login(frame mainFrame) {
-    	this.mainFrame = mainFrame;
+    public Login() {
         this.setTitle("Login");
         this.setSize(350, 250);
         this.setLayout(null);
         this.setResizable(false);
         this.setLocationRelativeTo(null);
 
-        JLabel userLabel = new JLabel("Username:");
+        JLabel userLabel = new JLabel("Email:");
         userLabel.setBounds(30, 40, 100, 30);
 
         usernameField = new JTextField();
@@ -47,17 +44,24 @@ public class Login extends JFrame implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        String username = usernameField.getText();
+        String email = usernameField.getText();
         String password = String.valueOf(passwordField.getPassword());
 
-        boolean success = userData.login(username, password);
+        // 🔥 GET USER INDEX
+        int index = userData.login(email, password);
 
-        if (success) {
+        if (index != -1) {
+
             JOptionPane.showMessageDialog(this, "Login successful!");
+
+            // 🔥 GET USER DATA
+            String name = userData.names[index];
+            String studentId = userData.studentIds[index];
 
             this.dispose();
 
-            new MainApp();
+            	new MainApp();
+            	
         } else {
             JOptionPane.showMessageDialog(this, "Invalid credentials!");
         }
