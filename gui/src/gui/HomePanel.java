@@ -3,6 +3,8 @@ package gui;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.datatransfer.StringSelection;
+import java.awt.Toolkit;
 
 public class HomePanel extends JPanel implements ActionListener {
 
@@ -27,6 +29,37 @@ public class HomePanel extends JPanel implements ActionListener {
         school.setForeground(Color.GRAY);
         school.setBounds(40, 60, 300, 25);
         add(school);
+        
+        JPanel userPanel = new JPanel();
+        userPanel.setBounds(500, 15, 260, 70);
+        userPanel.setBackground(new Color(240, 240, 240));
+        userPanel.setLayout(new BorderLayout());
+
+        userPanel.setLayout(null);
+
+	     // NAME + ID
+	     JLabel userInfo = new JLabel(
+	         "<html>Name: " + userData.currentName +
+	         "<br>Student ID: " + userData.currentStudentId + "</html>"
+	     );
+	     userInfo.setBounds(10, 5, 180, 50);
+	     userPanel.add(userInfo);
+	
+	     // COPY BUTTON
+	     JButton copyBtn = new JButton("📋");
+	     copyBtn.setBounds(190, 30, 40, 20);
+	     copyBtn.setMargin(new Insets(0,0,0,0));
+	     copyBtn.setFocusPainted(false);
+	
+	     copyBtn.addActionListener(e -> {
+	         StringSelection selection = new StringSelection(userData.currentStudentId);
+	         Toolkit.getDefaultToolkit().getSystemClipboard().setContents(selection, null);
+	         JOptionPane.showMessageDialog(this, "Student ID copied!");
+	     });
+	
+	     userPanel.add(copyBtn);
+	
+	     add(userPanel);
 
         // CARD 1
         resourcesBtn = createCard("Resources", 40);

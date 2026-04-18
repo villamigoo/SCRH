@@ -29,14 +29,15 @@ public class NotificationsPanel extends JPanel {
 
         for (int i = 0; i < RequestData.count; i++) {
 
-            displayArea.append(
-                "Name: " + RequestData.names[i] + "\n" +
-                "Type: " + RequestData.categories[i] + "\n" +
-                "Details: " + RequestData.details[i] + "\n" +
-                "Time: " + RequestData.time[i] + "\n" +
-                "Status: " + RequestData.status[i] + "\n" +
-                "------------------------------\n"
-            );
+        	displayArea.append(
+        		    "Name: " + RequestData.names[i] + "\n" +
+        		    "Student ID: " + RequestData.studentIds[i] + "\n" + 
+        		    "Type: " + RequestData.categories[i] + "\n" +
+        		    "Details: " + RequestData.details[i] + "\n" +
+        		    "Time: " + RequestData.time[i] + "\n" +
+        		    "Status: " + RequestData.status[i] + "\n" +
+        		    "------------------------------\n"
+        		);
         }
     }
 }

@@ -63,11 +63,33 @@ public class RequestForm extends JPanel {
         
         submitBtn.addActionListener(e -> {
 
-            String name = nameField.getText();
-            String studentId = emailField.getText();
+            String name = nameField.getText().trim();
+            String studentId = emailField.getText().trim();
             String category = (String) dropdown.getSelectedItem();
-            String details = detailsArea.getText();
+            String details = detailsArea.getText().trim();
 
+            // VALIDATION
+            if (name.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Name is required.");
+                return;
+            }
+
+            if (studentId.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Student ID is required.");
+                return;
+            }
+
+            if (!studentId.matches("\\d{2}-\\d{2}-\\d{4}-\\d{6}")) {
+                JOptionPane.showMessageDialog(this, 
+                    "Student ID must be in format: XX-XX-XXXX-XXXXXX");
+                return;
+            }
+
+            if (details.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Request details are required.");
+                return;
+            }
+            
             String timeNow = LocalDateTime.now()
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 

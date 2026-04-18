@@ -2,18 +2,22 @@ package gui;
 
 public class userData {
 
+	
     public static String[] names = new String[100];
     public static String[] emails = new String[100];
     public static String[] passwords = new String[100];
     public static String[] studentIds = new String[100];
+    public static String currentName;
+    public static String currentStudentId;
     public static int count = 0;
+    
 
     public static String register(String name, String email, String password) {
 
         // prevent overflow
         if (count >= 100) return null;
 
-        // check duplicate email (safe version)
+        // check duplicate email
         for (int i = 0; i < count; i++) {
             if (email.equals(emails[i])) {
                 return null;

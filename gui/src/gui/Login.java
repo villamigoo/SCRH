@@ -47,20 +47,23 @@ public class Login extends JFrame implements ActionListener {
         String email = usernameField.getText();
         String password = String.valueOf(passwordField.getPassword());
 
-        // 🔥 GET USER INDEX
+        // GET USER INDEX
         int index = userData.login(email, password);
 
         if (index != -1) {
 
             JOptionPane.showMessageDialog(this, "Login successful!");
 
-            // 🔥 GET USER DATA
             String name = userData.names[index];
             String studentId = userData.studentIds[index];
 
+            // SAVE CURRENT USER
+            userData.currentName = name;
+            userData.currentStudentId = studentId;
+
             this.dispose();
 
-            	new MainApp();
+            new MainApp();
             	
         } else {
             JOptionPane.showMessageDialog(this, "Invalid credentials!");
