@@ -14,8 +14,7 @@ public class RequestData {
     public static void addRequest(String name, String studentId, String category, String detail, String timeNow) {
 
         names[count] = name;
-        studentIds[count] = studentId;
-        studentIds[count] = studentId;  
+        studentIds[count] = studentId; 
         categories[count] = category;
         details[count] = detail;
         time[count] = timeNow;

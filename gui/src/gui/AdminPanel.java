@@ -46,18 +46,16 @@ public class AdminPanel extends JPanel {
         add(reject);
         add(complete);
 
-        // =========================
         // BUTTON LOGIC
-        // =========================
 
         approve.addActionListener(e -> updateStatus("Approved"));
         reject.addActionListener(e -> updateStatus("Rejected"));
         complete.addActionListener(e -> updateStatus("Completed"));
     }
 
-    // =========================
+
     // LOAD REQUESTS
-    // =========================
+
     public void loadRequests() {
 
         listModel.clear();
